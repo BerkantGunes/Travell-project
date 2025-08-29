@@ -1,32 +1,22 @@
-﻿@model List<DTOLayer.DTOs.AnnouncementDTOs.AnnouncementListDTO>
+﻿@model IEnumerable<BookingExchangeViewModel2.Exchange_Rates>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    int count = 0;
 }
 
-<h1>Announcement List</h1>
+<h1>Api Exchange Rates Page</h1>
+<br />
 
-<table class="table table-bordered">
+<table class="table table-striped">
     <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Content</th>
-        <th>Details</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th>Exchange Pair</th>
+        <th>Exchange Rates</th>
     </tr>
-    @foreach(var item in Model)
+    @foreach (var item in Model)
     {
-        count++;
         <tr>
-            <th>@count</th>
-            <td>@item.Title</td>
-            <td>@item.Content</td>
-            <td><a href="#" class="btn btn-outline-dark">Details</a></td>
-            <td><a href="/Admin/Announcement/UpdateAnnouncement/@item.AnnouncementId" class="btn btn-outline-success">Update</a></td>
-            <td><a href="/Admin/Announcement/DeleteAnnouncement/@item.AnnouncementId" class="btn btn-outline-danger">Delete</a></td>
+            <th>@item.currency</th>
+            <td>@item.exchange_rate_buy</td>
         </tr>
     }
 </table>
-<a href="/Admin/Announcement/AddAnnouncement/" class="btn btn-outline-info">Add New Announcement</a>
