@@ -1,22 +1,35 @@
-﻿@model IEnumerable<BookingExchangeViewModel2.Exchange_Rates>
+﻿@model IEnumerable<BookingHotelSearchViewModel.Datum>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
 }
 
-<h1>Api Exchange Rates Page</h1>
+<h1>Booking Hotel Reservation Page</h1>
 <br />
-
+<h3>Searching City: Paris/France</h3>
+<br />
 <table class="table table-striped">
     <tr>
-        <th>Exchange Pair</th>
-        <th>Exchange Rates</th>
+        <th>#</th>
+        <th>Hotel Name</th>
+        <th>Hotel Region</th>
+        <th>Hotel Country</th>
+        <th>Hotel Label</th>
+        <th>Details</th>
     </tr>
-    @foreach (var item in Model)
+    @foreach(var item in Model)
     {
+        count++;
         <tr>
-            <th>@item.currency</th>
-            <td>@item.exchange_rate_buy</td>
+            <td>@count</td>
+            <td>@item.name</td>
+            <td>@item.region</td>
+            <td>@item.country</td>
+            <td>@item.label</td>
+            <td><a href="#" class="btn btn-outline-dark">Details</a></td>
         </tr>
+        
     }
 </table>
+
