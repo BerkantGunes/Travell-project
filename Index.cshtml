@@ -1,20 +1,32 @@
-﻿@model AccountViewModel
+﻿@model List<DTOLayer.DTOs.AnnouncementDTOs.AnnouncementListDTO>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
 }
 
-<h1>Unit Of Work Staff Salary Payment</h1>
+<h1>Announcement List</h1>
 
-<form method="post">
-    <label>Sender</label>
-    <input type="text" asp-for="SenderId" class="form-control" />
-    <br />
-    <label>Receiver</label>
-    <input type="text" asp-for="ReceiverId" class="form-control" />
-    <br />
-    <label>Amount</label>
-    <input type="text" asp-for="Amount" class="form-control" />
-    <br />
-    <button class="btn btn-outline-warning">Transfer to Account</button>
-</form>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Details</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    @foreach(var item in Model)
+    {
+        count++;
+        <tr>
+            <th>@count</th>
+            <td>@item.Title</td>
+            <td>@item.Content</td>
+            <td><a href="#" class="btn btn-outline-dark">Details</a></td>
+            <td><a href="/Admin/Announcement/UpdateAnnouncement/@item.AnnouncementId" class="btn btn-outline-success">Update</a></td>
+            <td><a href="/Admin/Announcement/DeleteAnnouncement/@item.AnnouncementId" class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+    }
+</table>
+<a href="/Admin/Announcement/AddAnnouncement/" class="btn btn-outline-info">Add New Announcement</a>
