@@ -1,138 +1,29 @@
-﻿
+﻿@using EntityLayer.Concrete
+@model List<Comment>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<h1>City - Country Operations</h1>
-<br />
-<button type="button" id="btngetlist" class="btn btn-outline-info">City List</button>
-<button type="button" id="btngetbyid" class="btn btn-outline-primary">City List By ID</button>
-<button type="button" id="btnaddcity" class="btn btn-outline-success">Add New City</button>
-<button type="button" id="btnupdatecity" class="btn btn-outline-warning">Update City</button>
-<button type="button" id="btndeletecity" class="btn btn-outline-danger">Delete City</button>
 
-<br /><br />
+<h1>Comment List</h1>
 
-<div id="citylist">
-    City List Part
-</div>
-<br />
-<div>
-    <input type="text" id="txtid" placeholder="Enter City ID" class="form-control" />
-</div>
-<br />
-<div>
-    <input type="text" id="txtcityid" placeholder="Enter City Id to be Deleted" class="form-control" />
-</div>
-<br />
-<div>
-    <input type="text" id="txtupdatecityid" placeholder="Enter City Id to be Updated" class="form-control" />
-    <br />
-    <input type="text" id="txtcityname" placeholder="Enter City Name to be Updated" class="form-control" />
-    <br />
-    <input type="text" id="txtcitydaynight" placeholder="Enter City Day - Night to be Updated" class="form-control" />
-    <br />
-</div>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Destination</th>
+        <th>Date</th>
+        <th>Delete</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CommentId</td>
+            <td>@item.CommentUser</td>
+            <td>@item.Destination.City</td>
+            <td>@(((DateTime)item.CommentDate).ToString("dd-MMM-yyyy"))</td>
+            <td><a href="/Admin/Comment/DeleteComment/@item.CommentId" class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+    }
+</table>
 
-<div id="destinationlistbyid">
-
-</div>
-<br />
-<div>
-    <input type="text" id="txtcity" placeholder="Enter City Name" class="form-control" />
-    <br />
-    <input type="text" id="txtdaynight" placeholder="Enter Day Night" class="form-control" />
-    <br />
-    <input type="text" id="txtprice" placeholder="Enter Price" class="form-control" />
-    <br />
-    <input type="text" id="txtcapacity" placeholder="Tour Capacity" class="form-control" />
-</div>
-
-<script>
-    $("#btngetlist").click(function() {
-        $.ajax({
-            contentType:"application/json",
-            dataType:"json",
-            type: "Get",
-            url: "/Admin/City/CityList/",
-            success: function (func) {
-                let w = jQuery.parseJSON(func);
-                console.log(w);
-                let tablehtml= "<table class=table table-bordered> <tr><th> City Name </th> <th> Day Night </th> <th> Price </th> </tr>";
-                $.each(w, (index, value) => {
-                    tablehtml += `<tr><td>${value.City}</td> <td>${value.DayNight}</td> <td>${value.Price} $</td></tr>`
-                });
-                tablehtml += "</table>";
-                $("#citylist").html(tablehtml);
-            }
-        });
-    });
-
-    $("#btnaddcity").click(function() {
-        let cityvalues = {
-            City: $("#txtcity").val(),
-            DayNight: $("#txtdaynight").val(),
-            Price: $("txtprice").val(),
-            Capacity: $("txtcapacity").val()
-        };
-
-        $.ajax({
-            type: "post",
-            url: "/Admin/City/AddCityDestination/",
-            data: cityvalues,
-            success: function(func) {
-                let result = jQuery.parseJSON(func);
-                alert("City - Destination Added Successfully!");
-            }
-        });
-    });
-
-    $("#btngetbyid").click(x => {
-        let id = $("#txtid").val();
-
-        $.ajax({
-            contentType: "application/json",
-            dataType: "json",
-            type: "Get",
-            url: "/Admin/City/GetById/",
-            data: { DestinationId : id },
-            success: function (func2) {
-                let result = jQuery.parseJSON(func2);
-                console.log(result);
-                let htmlstr = `<table class= table table-bordered><tr><th>City Name</th><th>Day Night</th><th>Price</th></tr><tr><td>${result.City}</td><td>${result.DayNight}</td><td>${result.Price} $</td></tr></table>`;
-                $("#destinationlistbyid").html(htmlstr);
-            }
-        });
-    });
-
-    $("#btndeletecity").click(x => {
-        let id = $("#txtcityid").val();
-        $.ajax({
-            url: "/Admin/City/DeleteCity/"+ id,
-            type: "post",
-            contentType: "application/json",
-            dataType: "json",
-            success: function(func3) {
-                loadData();
-            }
-        });
-    });
-    
-    $("#btnupdatecity").click(function() {
-        let values = {
-            DestinationId: $("#txtupdatecityid").val(),
-            City: $("#txtcityname").val(),
-            DayNight: $("#txtcitydaynight").val()
-        };
-
-        $.ajax({
-            type: "post",
-            url: "/Admin/City/UpdateCity/",
-            data: values,
-            success: function (func4) {
-                alert("City Updated Successfully");
-            }
-        });
-    });
-</script>
